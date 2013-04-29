@@ -1,12 +1,14 @@
 {
-  "name": "application-name",
+  "name": "insults",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app"
   },
   "dependencies": {
-    "express": "3.0.3",
-    "jade": "*"
+    "express":    "3.0.3",
+    "mongo-sql":  "1.0.x",
+    "mongo-pg":   "1.0.x",
+    "hbs":        "2.0.x"
   }
 }
