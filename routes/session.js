@@ -1,8 +1,6 @@
 module.exports.get = function(req, res){
   if (!req.session || !req.session.user) return res.status(204).end();
 
-  console.log(req.session);
-
   return res.json(req.session.user);
 };
 

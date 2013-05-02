@@ -34,7 +34,7 @@ module.exports.auth = function(req, res){
       'User-Agent': 'John Fawcett Hubot Insults Application User Agent'
     }
   };
-console.log("request access token");
+
   request(options, function(error, response, body){
     if (error)
       return console.log(error, body), res.error(errors.auth.UNKNOWN_OAUTH);
@@ -49,10 +49,9 @@ console.log("request access token");
     options.method = 'GET';
     delete options.json;
 
-console.log("request profile");
     // Get user profile
     request(options, function(error, response, body){
-      if (error) return console.log(error, body), res.error(errors.auth.INVALID_ACCESS_TOKEN);
+      if (error) return res.error(errors.auth.INVALID_ACCESS_TOKEN);
 
       body = JSON.parse(body);
 
@@ -60,12 +59,10 @@ console.log("request profile");
 
       options.url = body.organizations_url;
 
-console.log("request profile");
       request(options, function(error, response, body){
-        if (error) return console.log(error, body), res.error(errors.auth.INVALID_ACCESS_TOKEN);
+        if (error) return res.error(errors.auth.INVALID_ACCESS_TOKEN);
 
         body = JSON.parse(body);
-console.log(body);
         if (body.filter(function(org){
           return org.login.toLowerCase() == 'goodybag';
         }).length == 0) return res.error(errors.auth.INVALID_ACCESS_TOKEN);
