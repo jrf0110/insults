@@ -6,9 +6,10 @@
     "start": "node app"
   },
   "dependencies": {
-    "express":    "3.0.3",
-    "mongo-sql":  "1.0.x",
-    "mongo-pg":   "1.0.x",
-    "hbs":        "2.0.x"
+    "express": "3.0.3",
+    "mongo-sql": "1.0.x",
+    "mongo-pg": "1.0.x",
+    "hbs": "2.0.x",
+    "request": "~2.21.0"
   }
 }
