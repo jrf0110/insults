@@ -286,7 +286,7 @@
 
           $('#submit-btn').text(
             config.loading[ parseInt(config.loading.length * Math.random()) ]
-          );
+          ).addClass('loading');
 
           utils.post('/insults', { message: insult }, function(error){
             if (error && error.type == "auth") return alert(
