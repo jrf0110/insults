@@ -25,9 +25,10 @@ app.configure(function(){
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
+  app.use(express.cookieParser('TODO: Replace cookie parser'));
+  app.use(express.cookieSession());
   app.use(m.error);
   app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
 
   db.init({
     collections:      config.db.collections
@@ -37,7 +38,26 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+
+  // Use nginx in prod
+  app.use(express.static(path.join(__dirname, 'public')));
 });
+
+app.post('/oauth'
+, routes.oauth.auth
+);
+
+app.get( '/oauth'
+, routes.oauth.get
+);
+
+app.get( '/session'
+, routes.session.get
+);
+
+app.del( '/session'
+, routes.session.remove
+);
 
 app.get( '/insults'
 , m.queryObj
@@ -57,6 +77,7 @@ app.get( '/insults/:id'
 );
 
 app.post( '/insults'
+, m.auth
 , m.permissions()
 , m.validation()
 , m.queryObj

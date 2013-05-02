@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,100,700,300' rel='stylesheet' type='text/css'>
+
+    <style>
+      body {
+        font-family: 'Roboto Slab', serif;
+        background: url(images/body-bg.jpg) repeat;
+      }
+
+      .hero-unit h1 {
+        color: rgba(255, 0, 0, 0.58);
+      }
+
+      .hide { display: none; }
+
+      .btn-crazy {
+        border: solid 2px rgba(0, 0, 0, 0.07);
+        padding: 12px 32px;
+        font-size: 18px;
+        font-weight: 800;
+        background: rgba(0, 255, 92, 0.36);
+        color: rgb(255, 255, 255);
+        text-shadow:
+            0   1px   0 rgba(0, 0, 0, 0.3)
+        , -18px 6px   0 rgba(255, 245, 0, 0.05)
+        , 11px -3px   0 rgba(0, 224, 255, 0.05)
+        , 18px 13px   0 rgba(245, 0, 255, 0.05)
+        , -18px -15px 0 rgba(0, 255, 133, 0.05)
+        , 28px -15px  0 rgba(255, 0, 0, 0.05);
+        vertical-align: middle;
+
+        -webkit-transition: text-shadow ease-in 0.4s;
+        -moz-transition: text-shadow ease-in 0.4s;
+        transition: text-shadow ease-in 0.4s;
+      }
+
+      .btn-crazy.btn-crazy-blue {
+        background: rgba(0, 235, 255, 0.36);
+      }
+
+      .btn-crazy:hover {
+        text-shadow:
+            0   1px   0 rgba(0, 0, 0, 0.3)
+        , 18px 6px   0 rgba(255, 245, 0, 0.6)
+        , -11px 3px   0 rgba(0, 224, 255, 0.3)
+        , -18px -13px   0 rgba(245, 0, 255, 0.37)
+        , 18px 15px 0 rgba(0, 255, 133, 0.3)
+        , -28px 15px  0 rgba(255, 0, 0, 0.49);
+      }
+
+      .btn-crazy.loading {
+        -webkit-animation: btn-crazy-loading 1s infinite;
+        -moz-animation: btn-crazy-loading 1s infinite;
+        animation: btn-crazy-loading 1s infinite;
+      }
+
+      @-webkit-keyframes btn-crazy-loading {
+        0% {
+          text-shadow:
+            0   1px   0 rgba(0, 0, 0, 0.3)
+        , -18px 6px   0 rgba(255, 245, 0, 0.05)
+        , 11px -3px   0 rgba(0, 224, 255, 0.05)
+        , 18px 13px   0 rgba(245, 0, 255, 0.05)
+        , -18px -15px 0 rgba(0, 255, 133, 0.05)
+        , 28px -15px  0 rgba(255, 0, 0, 0.05);
+        }
+
+        33% {
+          text-shadow:
+            0   1px   0 rgba(0, 0, 0, 0.3)
+        , 18px 6px   0 rgba(255, 245, 0, 0.6)
+        , -11px 3px   0 rgba(0, 224, 255, 0.3)
+        , -18px -13px   0 rgba(245, 0, 255, 0.37)
+        , 18px 15px 0 rgba(0, 255, 133, 0.3)
+        , -28px 15px  0 rgba(255, 0, 0, 0.49);
+        }
+
+        66% {
+          text-shadow:
+            0   1px   0 rgba(0, 0, 0, 0.3)
+        , -8px 16px   0 rgba(255, 245, 0, 0.4)
+        , 11px 18px   0 rgba(0, 224, 255, 0.5)
+        , 16px 5px   0 rgba(245, 0, 255, 0.67)
+        , 22px 8px 0 rgba(0, 255, 133, 0.5)
+        , -28px 2px  0 rgba(255, 0, 0, 0.29);
+        }
+
+        100% {
+          text-shadow:
+            0   1px   0 rgba(0, 0, 0, 0.3)
+        , -18px 6px   0 rgba(255, 245, 0, 0.05)
+        , 11px -3px   0 rgba(0, 224, 255, 0.05)
+        , 18px 13px   0 rgba(245, 0, 255, 0.05)
+        , -18px -15px 0 rgba(0, 255, 133, 0.05)
+        , 28px -15px  0 rgba(255, 0, 0, 0.05);
+        }
+      }
+
+      .insult-textarea {
+        width: 100%;
+      }
+
+      .hero-unit {
+        margin-top: 50px;
+        background-color: rgba(255, 234, 81, 0.3);
+        box-shadow: 2px 4px 20px rgba(0,0,0, 0.2);
+      }
+    </style>
+
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script>
+      var config = (function(){
+        var exports = {
+          loading: [
+            'Reticulating splines...'
+          , 'Disturbing the bees...'
+          , 'Contacting Goody the Bot'
+          , 'One sec, pooping.'
+          , 'One sec, bears'
+          ]
+        };
+
+        return exports;
+      })();
+
+      var utils = (function(){
+        var utils = {};
+
+        utils.dom = jQuery;
+        utils.domready = jQuery;
+
+        utils.filter = function(set, fn){
+          var filtered = [];
+          for (var i = 0, l = set.length; i < l; ++i){
+            if (fn(set[i])) filtered.push(set[i]);
+          }
+          return filtered;
+        };
+
+        utils.ajax = function(method, url, data, callback){
+          switch (method){
+            case "get":     method = "GET";     break;
+            case "post":    method = "POST";    break;
+            case "del":     method = "DELETE";  break;
+            case "put":     method = "PUT";     break;
+            case "patch":   method = "PUT";     break;
+          }
+
+          if (typeof data === "function"){
+            callback = data;
+            data = null;
+          }
+
+          if (method === "GET" || method === "get"){
+            url += utils.queryParams(data);
+            data = null;
+          }
+
+          var ajax = {
+            type: method
+          , method: method
+          , url: url
+          , xhrFields: { withCredentials: true }
+          , crossDomain: true
+          , success: function(results){
+              if (typeof results == 'string' && results) results = JSON.parse(results);
+              callback && callback(null, results);
+            }
+          , error: function(error, results, res, r){
+              callback && callback((error.responseText ? JSON.parse(error.responseText) : error) || true);
+            }
+          };
+
+          if (ajax.type != 'GET'){
+            ajax.headers = {
+              'Content-Type': 'application/json'
+            };
+          }
+
+          if (data) ajax.data = JSON.stringify(data);
+
+          $.ajax(ajax);
+        };
+
+        utils.get = function(url, params, callback){
+          utils.ajax('get', url, params, callback);
+          return utils;
+        };
+
+        utils.post = function(url, data, callback){
+          utils.ajax('post', url, data, callback);
+          return utils;
+        };
+
+        utils.put = function(url, data, callback){
+          utils.ajax('put', url, data, callback);
+          return utils;
+        };
+
+         utils.patch = function(url, data, callback){
+          utils.ajax('patch', url, data, callback);
+          return utils;
+        };
+
+        utils.del = function(url, data, callback){
+          utils.ajax('delete', url, data, callback);
+          return utils;
+        };
+
+        utils.queryParams = function(data){
+          if (typeof data !== "object") return "";
+          var params = "?";
+          for (var key in data){
+            params += key + "=" + data[key] + "&";
+          }
+          return params.substring(0, params.length - 1);
+        };
+
+        utils.noop = function(){};
+
+        return utils;
+      })();
+
+      if (window.location.href.indexOf('?code=') > -1){
+        var code = window.location.href.split('?code=')[1];
+        $('#github-auth-btn').text(
+          config.loading[ parseInt(config.loading.length * Math.random()) ]
+        );
+
+        utils.post('/oauth', { code: code }, function(error, result){
+          if (error && error.type == "auth") return alert(
+            'Authentication error, asshole.'
+          ), $('#github-auth-btn').text('Login With Github').removeClass('loading');
+
+          if (error) return alert(
+            'Something unknown happened, asshole'
+          );
+
+          $('#github-auth-btn').addClass('hide').removeClass('loading');
+
+          window.location.href = "/";
+        });
+      }
+
+
+      $(function(){
+        utils.get('/session', function(error, result){
+          if (result) return;
+
+          $('#github-auth-btn').removeClass('hide');
+        });
+
+        $('#github-auth-btn').click(function(e){
+          $('#github-auth-btn').text(
+            config.loading[ parseInt(config.loading.length * Math.random()) ]
+          );
+
+          utils.get('/oauth', function(error, result){
+            if (error) alert(
+              'Way to fuckin\' go asshole, you broke something.'
+            );
+
+            window.location.href = result.url;
+          });
+        });
+
+        var canSubmit = true;
+
+        $('#submit-btn').click(function(e){
+          if (!canSubmit) return alert(
+            'Wait a god damn second, asshole.'
+          );
+
+          var insult = $('#insults-form-insult')[0].value;
+
+          if (insult.indexOf('{name}') == -1){
+            canSubmit = true;
+            return alert(
+              'Please enter a {name} tag, asshole.'
+            );
+          }
+
+          $('#submit-btn').text(
+            config.loading[ parseInt(config.loading.length * Math.random()) ]
+          );
+
+          utils.post('/insults', { message: insult }, function(error){
+            if (error && error.type == "auth") return alert(
+              'You must be authenticated, asshole.'
+            ), $('#submit-btn').text('Submit').removeClass('loading'), canSubmit = true;;
+
+            if (error) return alert(
+              'Something unknown happened, asshole'
+            );
+
+            $('#submit-btn').text(
+              'Insult Saved!'
+            );
+
+            $('#insults-form-insult')[0].value = "";
+
+            setTimeout(function(){
+              $('#submit-btn').text(
+                'Submit'
+              ).removeClass('loading');
+              canSubmit = true;
+            }, 4000);
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="hero-unit">
+          <h1>Insults</h1>
+          <p>
+            Add an insult below in the form of: <br />
+            <em>Is it just me or does <strong>{name}</strong> smell like a sandwich that Rob Schneider kept in his underwear during a Houston marathon in July?</em>
+          </p>
+          <textarea class="insult-textarea" name="insult" id="insults-form-insult" rows="10"></textarea>
+          <button id="submit-btn" class="btn-crazy">
+            Submit
+          </button>
+          <button id="github-auth-btn" class="btn-crazy btn-crazy-blue icon-github hide">
+            Login With Github
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
