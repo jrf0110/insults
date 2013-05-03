@@ -28,6 +28,7 @@ app.configure(function(){
   app.use(express.cookieParser('TODO: Replace cookie parser'));
   app.use(express.cookieSession());
   app.use(m.error);
+  app.use(m.cors);
   app.use(app.router);
 
   db.init({
